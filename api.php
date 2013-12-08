@@ -1,6 +1,7 @@
 <?php
-  switch ($_SERVER['REQUEST_URI']) {
-    case '/api/item': case '/api/item.json':
+  //switch ($_SERVER['REQUEST_URI']) {
+  switch (true) {
+    case preg_match("/^\/api\/item.json(\?*.*?)$/", $_SERVER['REQUEST_URI']):
       header("Content-Type: application/json; charset=utf-8");
       $response = array();
       $file     = './item.csv';
@@ -11,7 +12,7 @@
       fclose($fp);
       echo json_encode($response);
       break;
-    case '/api/item.xml':
+    case preg_match("/^\/api\/item\.xml(\?*.*?)$/", $_SERVER['REQUEST_URI']):
       header("Content-Type: application/xml; charset=utf-8");
       $response = array();
       $file     = './item.csv';
