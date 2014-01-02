@@ -1,0 +1,6 @@
+AcceptPathInfo On
+RewriteEngine On
+RewriteBase /
+RewriteRule api/v1/(.*) index.php
+
+ErrorDocument 404 /404.html
