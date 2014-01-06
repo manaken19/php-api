@@ -47,6 +47,7 @@ class ItemModel
                 break;
         }
         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $items;
     }
 }
