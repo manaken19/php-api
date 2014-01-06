@@ -22,20 +22,20 @@ class ItemController
         $content_data = $this->_item->setContentData($request_params);
 
         $view = new View;
-        $view->render('detail.json', $content_data);
+        $view->render('detail.' . $params['format'], $content_data);
     }
 
     /**
      * 商品検索API /items
      */
-    public function item_search($request_params)
+    public function item_search($params)
     {
 
         //Viewに渡す変数を設定
-        $content_data = $this->_item->setContentData($request_params);
+        $content_data = $this->_item->setContentData($params);
 
         $view = new View;
-        $view->render('search.json', $content_data);
+        $view->render('search.' . $params['format'], $content_data);
     }
 
     /**
