@@ -26,7 +26,10 @@ class ItemModel
         } catch (PDOException $e) {
             exit('データベースに接続できませんでした。' . $e->getMessage());
         }
-        switch ($request_params['sort']) {
+
+        $sort = (isset($request_params['sort']))? $request_params['sort']:'';
+
+        switch ($sort) {
             case 'asc':
                 $stmt = $pdo->query('SELECT * FROM items ORDER BY product_id ASC');
                 break;

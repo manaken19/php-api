@@ -22,7 +22,8 @@ class ItemController
         $content_data = $this->_item->setContentData($request_params);
 
         $view = new View;
-        $view->render('detail.' . $params['format'], $content_data);
+        $format = (isset($params['format']))? $params['format']:'json';
+        $view->render('detail.' . $format, $content_data);
     }
 
     /**
@@ -35,7 +36,8 @@ class ItemController
         $content_data = $this->_item->setContentData($params);
 
         $view = new View;
-        $view->render('search.' . $params['format'], $content_data);
+        $format = (isset($params['format']))? $params['format']:'json';
+        $view->render('search.' . $format, $content_data);
     }
 
     /**
