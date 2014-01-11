@@ -1,53 +1,85 @@
 <?php
 
-require_once (dirname(__FILE__) . "/../config/db.php");
+require_once (dirname(__FILE__) . "/../core/db.php");
 
 class ItemModel
 {
 	//パラメーター定義
-    protected $params = array(
-                'format'         => 'json',
-                'category_id'    => '',
-                'price_min'      => '',
-                'price_max'      => '',
-                'sort'           => '',
-                'count_per_page' => '',
-                'page_number'    => ''
-                );
+    private $default_params = array(
+        'format'         => 'json',
+        'category_id'    => '',
+        'price_min'      => '',
+        'price_max'      => '',
+        'sort'           => '',
+        'count_per_page' => '',
+        'page_number'    => ''
+    );
 
-    public function setContentData($request_params)
+    public function getContentData($request_params)
     {
 
-        $dbconfig = new DbConfig;
-        $dns = $dbconfig->config();
-        try {
-            //$pdo = new PDO('mysql:dbname=ohshimaapi;host=127.0.0.1');
-            $pdo = new PDO($dns['dns']);
-        } catch (PDOException $e) {
-            exit('データベースに接続できませんでした。' . $e->getMessage());
+        $db     = new Database;
+
+        $params = $this->setParams($request_params);
+
+        $sql    = $this->getSqlQuery($params);
+
+        $items = $db->fetchAll($sql, $placeholders);
+
+        return $items;
+
+    }
+
+    private function setParams($request_params)
+    { 
+        $params = $this->default_params;
+
+        foreach ($request_params as $key => $value) {
+            switch ($key) {
+                case 'format' :
+                case 'category_id' :
+                case 'price_min':
+                case 'price_max':
+                case 'sort':
+                case 'count_per_page':
+                case 'page_number':
+                    $params[$key] = $value;
+                    break;
+                default :
+                    return false;
+                    break;
+            }
         }
 
-        $sort = (isset($request_params['sort']))? $request_params['sort']:'';
+        return $params;
+    }
+
+    private function getSqlQuery($params)
+    {
+        $sort   = (isset($request_params['sort']))? $request_params['sort']:'';
 
         switch ($sort) {
             case 'asc':
-                $stmt = $pdo->query('SELECT * FROM items ORDER BY product_id ASC');
+                $sql = 'SELECT * FROM items ORDER BY product_id ASC';
                 break;
             case 'desc':
-                $stmt = $pdo->query('SELECT * FROM items ORDER BY product_id DESC');
+                $sql = 'SELECT * FROM items ORDER BY product_id DESC';
                 break;
             case 'price_asc':
-                $stmt = $pdo->query('SELECT * FROM items ORDER BY price ASC');
+                $sql = 'SELECT * FROM items ORDER BY price ASC';
                 break;
             case 'price_desc':
-                $stmt = $pdo->query('SELECT * FROM items ORDER BY price DESC');
+                $sql = 'SELECT * FROM items ORDER BY price DESC';
                 break;
             default:
-                $stmt = $pdo->query('SELECT * FROM items');
+                $sql = 'SELECT * FROM items';
                 break;
         }
-        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-        return $items;
+
+        $sql = "SELECT * FROM items {$where_str} {$order_str} {$limit_str} {$offset_str}";
+
+
+        return $sql;
     }
+
 }

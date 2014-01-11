@@ -2,17 +2,16 @@
 /**
  * The database settings.
  */
-class DbConfig
+class Database_Setting
 {
-	public function config()
-	{
-	    $params = array(
-	        //'dsn' => 'mysql:host=localhost;dbname=ohshimaapi',
-            'dns' => 'mysql:dbname=ohshimaapi;host=127.0.0.1',
-	        'user' => '',
-	        'password' => ''
-	    );
-
-		return $params;
+	private static $_config = array(
+        'dns'  => 'mysql:dbname=ohshimaapi;host=127.0.0.1',
+        'user' => 'root',
+        'pass' => '',
+    );
+ 
+    public function db_config()
+    {
+        return self::$_config;
     }
 }
