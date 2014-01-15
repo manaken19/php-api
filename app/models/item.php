@@ -17,10 +17,27 @@ class ItemModel
 
     public function getContentData($request_params)
     {
-        $params = $this->setParams($request_params);
-        $items  = $this->getSqlQuery($params);
+        $content_data = array();
 
-        var_dump($items);exit;
+        if (! empty($request_params['format'])) {
+            switch ($request_params['format']) {
+                case 'xml':
+                    $content_data['format'] = 'xml';
+                    break;
+
+                case 'json':
+                default:
+                    $content_data['format'] = 'json';
+                    break;
+            }
+        }
+
+        $content_data['format']
+
+        $params = $this->setParams($request_params);
+        $items_data  = $this->getSqlQuery($params);
+
+
 
         return $items;
 
@@ -31,7 +48,6 @@ class ItemModel
         $params = $this->default_params;
         foreach ($request_params as $key => $value) {
             switch ($key) {
-                case 'format' :
                 case 'category_id' :
                 case 'price_min':
                 case 'price_max':
@@ -41,7 +57,6 @@ class ItemModel
                     $params[$key] = $value;
                     break;
                 default :
-                    return false;
                     break;
             }
         }

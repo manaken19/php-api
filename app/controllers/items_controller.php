@@ -22,7 +22,7 @@ class ItemsController
         $content_data = $this->_item->getContentData($params);
 
         $view   = new View;
-        $view->render('detail.' . $format, $content_data);
+        $view->render('detail', $content_data);
     }
 
     /**
@@ -34,7 +34,7 @@ class ItemsController
         $content_data = $this->_item->getContentData($params);
 
         $view = new View;
-        $view->render('search.' . $format, $content_data);
+        $view->render('search', $content_data);
     }
 
     /**
@@ -42,24 +42,29 @@ class ItemsController
      */
     public function action_error($params) {
 
+        $view = new View;
+
         $error_code    = $params['status']['code'];
         $error_message = $params['status']['message'];
 
         switch($error_code){
             case '400':
                 header("HTTP/1.1 400 Bad Request");
+                $view->render('400', $content_data);
                 break;
             case '404':
                 header("HTTP/1.1 404 Not Found");
+                $view->render('404', $content_data);
                 break;
-            case '400':
+            case '406':
                 header("HTTP/1.1 406 Not Acceptable");
+                $view->render('406', $content_data);
                 break;
             case '500':
                 header("HTTP/1.1 500 Internal Servr Error");
+                $view->render('500', $content_data);
                 break;
         }
 
-        require '../app/views/items/error.json.php';
     }
 }
