@@ -4,22 +4,14 @@ require_once (dirname(__FILE__) . "/../core/db.php");
 
 class ItemModel
 {
-	//パラメーター定義
-    private $default_params = array(
-        'format'         => 'json',
-        'category_id'    => '',
-        'price_min'      => '',
-        'price_max'      => '',
-        'sort'           => '',
-        'count_per_page' => '',
-        'page_number'    => ''
-    );
 
     public function getContentData($request_params)
     {
         $content_data = array();
+        $params = array();
 
         if (! empty($request_params['format'])) {
+
             switch ($request_params['format']) {
                 case 'xml':
                     $content_data['format'] = 'xml';
@@ -30,22 +22,11 @@ class ItemModel
                     $content_data['format'] = 'json';
                     break;
             }
+
+        } else {
+            $content_data['format'] = 'json';
         }
 
-        $content_data['format']
-
-        $params = $this->setParams($request_params);
-        $items_data  = $this->getSqlQuery($params);
-
-
-
-        return $items;
-
-    }
-
-    private function setParams($request_params)
-    { 
-        $params = $this->default_params;
         foreach ($request_params as $key => $value) {
             switch ($key) {
                 case 'category_id' :
@@ -61,7 +42,11 @@ class ItemModel
             }
         }
 
-        return $params;
+        $items_data  = $this->getSqlQuery($params);
+
+        $content_data['items_data'] = $items_data;
+
+        return $content_data;
 
     }
 

@@ -6,9 +6,11 @@ header("Content-Type: application/json; charset=utf-8");
         {
         "item":
             [
-<?php foreach ($content_data as $item) {
-    echo json_encode($item) . ',' . "\n";
-}?>
+ <?php 
+    foreach ($content_data['items_data'] as $item) {
+        echo json_encode($item) . ',' . "\n";
+    }
+?>
             ]
         }
 }
