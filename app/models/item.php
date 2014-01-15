@@ -10,22 +10,6 @@ class ItemModel
         $content_data = array();
         $params = array();
 
-        if (! empty($request_params['format'])) {
-
-            switch ($request_params['format']) {
-                case 'xml':
-                    $content_data['format'] = 'xml';
-                    break;
-
-                case 'json':
-                default:
-                    $content_data['format'] = 'json';
-                    break;
-            }
-
-        } else {
-            $content_data['format'] = 'json';
-        }
 
         foreach ($request_params as $key => $value) {
             switch ($key) {
@@ -42,15 +26,23 @@ class ItemModel
             }
         }
 
-        $items_data  = $this->getSqlQuery($params);
+        $content_data  = $this->getData($params);
 
-        $content_data['items_data'] = $items_data;
+        $response_array['result'] = array(
+            'requested' => array(
+                    'parameter' => $request_params,
+                    'timestamp' => time()
+            ),
+            'item_count' => count($content_data),
+            'items' => $content_data
+        );
+        $content_data = json_encode($response_array);
 
         return $content_data;
 
     }
 
-    private function getSqlQuery($params)
+    private function getData($params)
     {
 
         $placeholders = array();
@@ -110,6 +102,18 @@ class ItemModel
         $items = $db->fetchAll($sql, $placeholders);
 
         return $items;
+    }
+
+    function raw_json_encode($input) {
+    
+        return preg_replace_callback(
+            '/\\\\u([0-9a-zA-Z]{4})/',
+            function ($matches) {
+                return mb_convert_encoding(pack('H*',$matches[1]),'UTF-8','UTF-16');
+            },
+            json_encode($input)
+        );
+    
     }
 
 }

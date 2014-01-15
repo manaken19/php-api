@@ -18,11 +18,11 @@ class ItemsController
      */
     public function action_detail($params)
     {
-        //Viewに渡す変数を設定
+        $format = $this->getformat($params);
         $content_data = $this->_item->getContentData($params);
 
         $view   = new View;
-        $view->render('detail', $content_data);
+        $view->render('detail', $format, $content_data);
     }
 
     /**
@@ -30,11 +30,11 @@ class ItemsController
      */
     public function action_search($params)
     {
-        //Viewに渡す変数を設定
+        $format = $this->getformat($params);
         $content_data = $this->_item->getContentData($params);
 
         $view = new View;
-        $view->render('search', $content_data);
+        $view->render('search', $format, $content_data);
     }
 
     /**
@@ -42,29 +42,41 @@ class ItemsController
      */
     public function action_error($params) {
 
-        $view = new View;
-
         $error_code    = $params['status']['code'];
         $error_message = $params['status']['message'];
 
         switch($error_code){
             case '400':
                 header("HTTP/1.1 400 Bad Request");
-                $view->render('400', $content_data);
                 break;
             case '404':
                 header("HTTP/1.1 404 Not Found");
-                $view->render('404', $content_data);
                 break;
             case '406':
                 header("HTTP/1.1 406 Not Acceptable");
-                $view->render('406', $content_data);
                 break;
             case '500':
                 header("HTTP/1.1 500 Internal Servr Error");
-                $view->render('500', $content_data);
                 break;
         }
+    }
 
+    public function getformat($request_params)
+    {
+        if (! empty($request_params['format'])) {
+            switch ($request_params['format']) {
+                case 'xml':
+                    $format = 'xml';
+                    break;
+
+                case 'json':
+                default:
+                    $format = 'json';
+                    break;
+            }
+        } else {
+            $format = 'json';
+        }
+        return $format;
     }
 }
