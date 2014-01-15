@@ -16,7 +16,7 @@ class Database
 		$db_config = $config->db_config();
 		
 		try {
-            $this->_dbh = new PDO($db_config["dns"], $db_config["user"], $db_config["pass"]);
+            $this->dbh = new PDO($db_config["dns"], $db_config["user"], $db_config["pass"]);
 		} catch (PDOException $e) {
             var_dump($e->getMessage());
             exit;
@@ -27,12 +27,13 @@ class Database
     public function execute($sql, $placeholders = array())
     {
         $this->connect();
+// $sql = "SELECT * FROM items WHERE product_id = 1090";
         $stmt = $this->dbh->prepare($sql);
 
-        foreach ($placeholders as $key => $value) {
-            $data_type = $this->check_datatype($value);
-            $stmt->bindValue($key, $value, $data_type);
-        }
+//        foreach ($placeholders as $key => $value) {
+//            $data_type = $this->check_datatype($value);
+//            $stmt->bindValue($key, $value, $data_type);
+//       }
 
         $stmt->execute();
 

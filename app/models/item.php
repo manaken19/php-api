@@ -17,14 +17,10 @@ class ItemModel
 
     public function getContentData($request_params)
     {
-
-        $db     = new Database;
-
         $params = $this->setParams($request_params);
+        $items  = $this->getSqlQuery($params);
 
-        $sql    = $this->getSqlQuery($params);
-
-        $items = $db->fetchAll($sql, $placeholders);
+        var_dump($items);exit;
 
         return $items;
 
@@ -33,7 +29,6 @@ class ItemModel
     private function setParams($request_params)
     { 
         $params = $this->default_params;
-
         foreach ($request_params as $key => $value) {
             switch ($key) {
                 case 'format' :
@@ -52,34 +47,69 @@ class ItemModel
         }
 
         return $params;
+
     }
 
     private function getSqlQuery($params)
     {
-        $sort   = (isset($request_params['sort']))? $request_params['sort']:'';
 
-        switch ($sort) {
-            case 'asc':
-                $sql = 'SELECT * FROM items ORDER BY product_id ASC';
-                break;
-            case 'desc':
-                $sql = 'SELECT * FROM items ORDER BY product_id DESC';
-                break;
-            case 'price_asc':
-                $sql = 'SELECT * FROM items ORDER BY price ASC';
-                break;
-            case 'price_desc':
-                $sql = 'SELECT * FROM items ORDER BY price DESC';
-                break;
-            default:
-                $sql = 'SELECT * FROM items';
-                break;
+        $placeholders = array();
+
+        $where_array = array('TRUE');
+        $where_str   = ''; //WHERE 部分
+        $order_str   = ''; //ORDER BY 部分
+        $limit_str   = ''; //LIMT 部分
+        $offset_str  = ''; //OFFSET 部分
+
+
+        //WHERE文の指定
+        if (!empty($params['category_id'])) {
+            $where_array[] = 'category_id = :category_id';
+            $placeholders[':category_id'] = $params['category_id'];
+        }
+        if (!empty($params['price_min'])) {
+            $where_array[] = 'price >= :price_min';
+            $placeholders[':price_min'] = $params['price_min'];
+        }
+        if (!empty($params['price_max'])) {
+            $where_array[] = 'price <= :price_max';
+            $placeholders[':price_max'] = $params['price_max'];
         }
 
+        //$where_str = implode(' AND ', $where_array);
+
+        //ORDER BY 部分の指定
+        if (!empty($params['sort'])) {
+            switch ($params['sort']) {
+                case 'id_asc' :
+                    $order_str = "ORDER BY product_id ASC";
+                    break;
+                case 'id_desc' :
+                    $order_str = "ORDER BY product_id DESC";
+                    break;
+                case 'price_asc' :
+                    $order_str = "ORDER BY price ASC";
+                    break;
+                case 'price_desc' :
+                    $order_str = "ORDER BY price DESC";
+                    break;
+            }
+        }
+
+        if (!empty($params['count_per_page']) && !empty($params['page_number'])) {
+
+            $limit_str = "LIMIT :limit_count";
+            $placeholders[':limit_count'] = $params['count_per_page'];
+
+            $offset_str = "OFFSET :offset_count";
+            $placeholders[':offset_count'] = $params['count_per_page'] * ($params['page_number'] - 1);
+        }
         $sql = "SELECT * FROM items {$where_str} {$order_str} {$limit_str} {$offset_str}";
 
+        $db     = new Database;
+        $items = $db->fetchAll($sql, $placeholders);
 
-        return $sql;
+        return $items;
     }
 
 }

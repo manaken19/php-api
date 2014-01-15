@@ -34,7 +34,6 @@ class ItemsController
         $content_data = $this->_item->getContentData($params);
 
         $view = new View;
-        $format = (isset($params['format']))? $params['format']:'json';
         $view->render('search.' . $format, $content_data);
     }
 
