@@ -13,7 +13,7 @@ class ItemModel
 
         foreach ($request_params as $key => $value) {
             switch ($key) {
-                case 'category_id' :
+                case 'category' :
                 case 'price_min':
                 case 'price_max':
                 case 'sort':
@@ -47,7 +47,7 @@ class ItemModel
 
         $placeholders = array();
 
-        $where_array = array('TRUE');
+        $where_array = '';
         $where_str   = ''; //WHERE 部分
         $order_str   = ''; //ORDER BY 部分
         $limit_str   = ''; //LIMT 部分
@@ -55,20 +55,28 @@ class ItemModel
 
 
         //WHERE文の指定
-        if (!empty($params['category_id'])) {
-            $where_array[] = 'category_id = :category_id';
-            $placeholders[':category_id'] = $params['category_id'];
+        $where_flg = false;
+        if (!empty($params['category'])) {
+            $where_array[] = 'category = :category';
+            $placeholders[':category'] = $params['category'];
+            $where_flg = true;
         }
         if (!empty($params['price_min'])) {
             $where_array[] = 'price >= :price_min';
             $placeholders[':price_min'] = $params['price_min'];
+            $where_flg = true;
         }
         if (!empty($params['price_max'])) {
             $where_array[] = 'price <= :price_max';
             $placeholders[':price_max'] = $params['price_max'];
+            $where_flg = true;
         }
 
-        //$where_str = implode(' AND ', $where_array);
+        if ($where_flg === true) { 
+            $where_str = implode(' AND ', $where_array);
+        } else {
+            $where_str = '';
+        }
 
         //ORDER BY 部分の指定
         if (!empty($params['sort'])) {
@@ -96,24 +104,14 @@ class ItemModel
             $offset_str = "OFFSET :offset_count";
             $placeholders[':offset_count'] = $params['count_per_page'] * ($params['page_number'] - 1);
         }
-        $sql = "SELECT * FROM items {$where_str} {$order_str} {$limit_str} {$offset_str}";
+
+        $sql = "SELECT * FROM items WHERE {$where_str} {$order_str} {$limit_str} {$offset_str}";
 
         $db     = new Database;
+
         $items = $db->fetchAll($sql, $placeholders);
 
         return $items;
-    }
-
-    function raw_json_encode($input) {
-    
-        return preg_replace_callback(
-            '/\\\\u([0-9a-zA-Z]{4})/',
-            function ($matches) {
-                return mb_convert_encoding(pack('H*',$matches[1]),'UTF-8','UTF-16');
-            },
-            json_encode($input)
-        );
-    
     }
 
 }
