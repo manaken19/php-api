@@ -81,7 +81,7 @@ class ItemModel
         }
 
         //ORDER BY 部分の指定
-        if (!empty($params['sort'])) {
+        if (! empty($params['sort'])) {
             switch ($params['sort']) {
                 case 'id_asc' :
                     $order_str = "ORDER BY id ASC";
@@ -98,13 +98,18 @@ class ItemModel
             }
         }
 
-        if (!empty($params['count_per_page']) && !empty($params['page_number'])) {
+        if (! empty($params['count_per_page']) && !empty($params['page_number'])) {
 
             $limit_str = "LIMIT :limit_count";
             $placeholders[':limit_count'] = $params['count_per_page'];
 
             $offset_str = "OFFSET :offset_count";
             $placeholders[':offset_count'] = $params['count_per_page'] * ($params['page_number'] - 1);
+        } else {
+
+            $limit_str = "LIMIT :limit_count";
+            $placeholders[':limit_count'] = 100;
+
         }
 
         $sql  = "SELECT * FROM item {$where_str} {$order_str} {$limit_str} {$offset_str}";
