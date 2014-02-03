@@ -10,7 +10,6 @@ class ItemModel
         $content_data = array();
         $params = array();
 
-
         foreach ($request_params as $key => $value) {
             switch ($key) {
                 case 'category' :
@@ -77,15 +76,18 @@ class ItemModel
         } else {
             $where_str = '';
         }
+        if (! count($where_array)) {
+            $where_str = " WHERE " . $where_str;
+        }
 
         //ORDER BY 部分の指定
         if (!empty($params['sort'])) {
             switch ($params['sort']) {
                 case 'id_asc' :
-                    $order_str = "ORDER BY product_id ASC";
+                    $order_str = "ORDER BY id ASC";
                     break;
                 case 'id_desc' :
-                    $order_str = "ORDER BY product_id DESC";
+                    $order_str = "ORDER BY id DESC";
                     break;
                 case 'price_asc' :
                     $order_str = "ORDER BY price ASC";
@@ -105,9 +107,9 @@ class ItemModel
             $placeholders[':offset_count'] = $params['count_per_page'] * ($params['page_number'] - 1);
         }
 
-        $sql = "SELECT * FROM items WHERE {$where_str} {$order_str} {$limit_str} {$offset_str}";
+        $sql  = "SELECT * FROM item {$where_str} {$order_str} {$limit_str} {$offset_str}";
 
-        $db     = new Database;
+        $db    = new Database;
 
         $items = $db->fetchAll($sql, $placeholders);
 

@@ -41,6 +41,7 @@ class ItemsController
      * error action 
      */
     public function action_error($params) {
+        echo "error!!!";exit;
 
         $error_code    = $params['status']['code'];
         $error_message = $params['status']['message'];
