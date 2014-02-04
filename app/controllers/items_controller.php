@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../models/item.php");
+require_once(dirname(__FILE__) . "/../models/category.php");
 require_once(dirname(__FILE__) . "/../views/view.php");
 
 class ItemsController
@@ -10,7 +11,8 @@ class ItemsController
 
     public function __construct()
     {
-        $this->_item = new ItemModel();
+        $this->_item     = new ItemModel();
+        $this->_category = new CategoryModel();
     }
 
     /**
@@ -42,6 +44,14 @@ class ItemsController
     {
         $format   = $this->format($params);
         $contents = $this->_item->Categories($params);
+        $view     = new View;
+        $view->render('search', $format, $contents);
+    }
+
+    public function categoriy_items($params, $category_id)
+    {
+        $format   = $this->format($params);
+        $contents = $this->_category->Categories($category_id);
         $view     = new View;
         $view->render('search', $format, $contents);
     }

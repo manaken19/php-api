@@ -25,7 +25,11 @@ switch ($uri_segments[0]) {
         break;
 
     case 'categories':
-        $item_controller->categories($_GET);
+        if (isset($uri_segments[1])) {
+            $item_controller->category_items($_GET, $uri_segments[1]);
+        } else {
+            $item_controller->categories($_GET);
+        }
         break;
 
     default:
