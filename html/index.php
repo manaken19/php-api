@@ -8,23 +8,27 @@ if (isset($_SERVER['PATH_INFO'])) {
     $uri_segments = array();
     $uri_segments = explode('/', ltrim($_SERVER['PATH_INFO'], '/'));
 } else {
-    $item_controller->action_error('404');
+    $item_controller->error('404');
 }
 
 switch ($uri_segments[0]) {
     case 'item':
         if (isset($uri_segments[1])) {
-            $item_controller->action_detail($_GET, $uri_segments[1]);
+            $item_controller->detail($_GET, $uri_segments[1]);
         } else {
-            $item_controller->action_error('405');
+            $item_controller->error('405');
         }
         break;
 
     case 'items':
-        $item_controller->action_search($_GET);
+        $item_controller->search($_GET);
+        break;
+
+    case 'categories':
+        $item_controller->categories($_GET);
         break;
 
     default:
-        $item_controller->action_error('405');
+        $item_controller->error('405');
         break;
 }

@@ -14,32 +14,42 @@ class ItemsController
     }
 
     /**
-     * 商品詳細API /items
+     * 商品詳細API /item
      */
-    public function action_detail($params, $id = 1)
+    public function detail($params, $id = 1)
     {
-        $format = $this->getformat($params);
+        $format   = $this->format($params);
         $contents = $this->_item->ItemDetail($id);
-
-        $view   = new View;
+        $view     = new View;
         $view->render('detail', $format, $contents);
     }
 
     /**
      * 商品検索API /items
      */
-    public function action_search($params)
+    public function search($params)
     {
-        $format = $this->getformat($params);
+        $format   = $this->format($params);
         $contents = $this->_item->Items($params);
-        $view = new View;
+        $view     = new View;
+        $view->render('search', $format, $contents);
+    }
+
+    /**
+     * カテゴリ一覧表示API /items
+     */
+    public function categories($params)
+    {
+        $format   = $this->format($params);
+        $contents = $this->_item->Categories($params);
+        $view     = new View;
         $view->render('search', $format, $contents);
     }
 
     /**
      * error action 
      */
-    public function action_error($params) {
+    public function error($params) {
         echo "error!!!";exit;
 
         $error_code    = $params['status']['code'];
@@ -61,7 +71,7 @@ class ItemsController
         }
     }
 
-    public function getformat($request_params)
+    public function format($request_params)
     {
         if (! empty($request_params['format'])) {
             switch ($request_params['format']) {

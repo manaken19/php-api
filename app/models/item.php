@@ -64,6 +64,27 @@ class ItemModel
 
     }
 
+    public function Categories()
+    {
+        $placeholders = array();
+        $db           = new Database;
+        $sql          = "select * from categories";
+        $content_data = $db->fetchAll($sql, $placeholders);
+
+        $response_array['result'] = array(
+            'requested' => array(
+                    'parameter' => null,
+                    'timestamp' => time()
+            ),
+            'item_count' => count($content_data),
+            'items'      => $content_data
+        );
+        $content_data = json_encode($response_array);
+
+        return $content_data;
+
+    }
+
     private function getData($params)
     {
 
