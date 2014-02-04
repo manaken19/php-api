@@ -18,6 +18,7 @@ class ItemModel
                 case 'sort':
                 case 'count_per_page':
                 case 'page_number':
+                case 'q':
                     $params[$key] = $value;
                     break;
                 default :
@@ -43,12 +44,20 @@ class ItemModel
 
     public function ItemDetail($id)
     {
-        $placeholders = array();
         $db    = new Database;
+
         $where_str = "WHERE id = :id";
+        $placeholders = array();
         $placeholders[':id'] = $id;
         $sql  = "SELECT * FROM item {$where_str}";
         $content_data = $db->fetchAll($sql, $placeholders);
+
+        $parent_category_id = $content_data[0]['category_id'];
+        $where_str = "WHERE parent_id = :parent_id";
+        $sql  = "SELECT * FROM categories {$where_str}";
+        $placeholders = array();
+        $placeholders[':parent_id'] = $parent_category_id;
+        $child_category_id = $db->fetchAll($sql, $placeholders);
 
         $response_array['result'] = array(
             'requested' => array(
@@ -56,7 +65,11 @@ class ItemModel
                     'timestamp' => time()
             ),
             'item_count' => count($content_data),
-            'items' => $content_data
+            'items' => $content_data,
+            'category_info' => array(
+                'parent_category_id'  => $parent_category_id,
+                'child_category_id' => $child_category_id
+            )
         );
         $content_data = json_encode($response_array);
 
@@ -95,6 +108,7 @@ class ItemModel
         $order_str   = ''; //ORDER BY 部分
         $limit_str   = ''; //LIMT 部分
         $offset_str  = ''; //OFFSET 部分
+        $like_str    = '';
 
 
         //WHERE文の指定
@@ -156,7 +170,12 @@ class ItemModel
 
         }
 
-        $sql  = "SELECT * FROM item {$where_str} {$order_str} {$limit_str} {$offset_str}";
+        if (! empty($params['q'])) {
+            $like_str = "WHERE title LIKE :query";
+            $placeholders[':query'] = "%".$params['q']."%";
+        }
+
+        $sql  = "SELECT * FROM item {$where_str} {$like_str} {$order_str} {$limit_str} {$offset_str}";
 
         $db    = new Database;
 
