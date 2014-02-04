@@ -2,7 +2,7 @@
 
 class View
 {
-    public function render($action, $format, $content_data)
+    public function render($action, $format, $contents)
     {
     	switch ($action) {
     		case 'search':
@@ -10,7 +10,7 @@ class View
     			break;
     		
     		case 'detail':
-                require_once(dirname(__FILE__) . '/items/detail' . $format . '.php');
+                require_once(dirname(__FILE__) . '/items/detail.' . $format . '.php');
     			break;
     		
     		case 'error':

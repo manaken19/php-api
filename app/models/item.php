@@ -5,7 +5,7 @@ require_once (dirname(__FILE__) . "/../core/db.php");
 class ItemModel
 {
 
-    public function getContentData($request_params)
+    public function Items($request_params)
     {
         $content_data = array();
         $params = array();
@@ -30,6 +30,29 @@ class ItemModel
         $response_array['result'] = array(
             'requested' => array(
                     'parameter' => $request_params,
+                    'timestamp' => time()
+            ),
+            'item_count' => count($content_data),
+            'items' => $content_data
+        );
+        $content_data = json_encode($response_array);
+
+        return $content_data;
+
+    }
+
+    public function ItemDetail($id)
+    {
+        $placeholders = array();
+        $db    = new Database;
+        $where_str = "WHERE id = :id";
+        $placeholders[':id'] = $id;
+        $sql  = "SELECT * FROM item {$where_str}";
+        $content_data = $db->fetchAll($sql, $placeholders);
+
+        $response_array['result'] = array(
+            'requested' => array(
+                    'parameter' => $id,
                     'timestamp' => time()
             ),
             'item_count' => count($content_data),

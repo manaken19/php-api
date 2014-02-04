@@ -13,7 +13,11 @@ if (isset($_SERVER['PATH_INFO'])) {
 
 switch ($uri_segments[0]) {
     case 'item':
-        $item_controller->action_detail($_GET);
+        if (isset($uri_segments[1])) {
+            $item_controller->action_detail($_GET, $uri_segments[1]);
+        } else {
+            $item_controller->action_error('405');
+        }
         break;
 
     case 'items':

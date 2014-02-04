@@ -16,13 +16,13 @@ class ItemsController
     /**
      * 商品詳細API /items
      */
-    public function action_detail($params)
+    public function action_detail($params, $id = 1)
     {
         $format = $this->getformat($params);
-        $content_data = $this->_item->getContentData($params);
+        $contents = $this->_item->ItemDetail($id);
 
         $view   = new View;
-        $view->render('detail', $format, $content_data);
+        $view->render('detail', $format, $contents);
     }
 
     /**
@@ -31,10 +31,9 @@ class ItemsController
     public function action_search($params)
     {
         $format = $this->getformat($params);
-        $content_data = $this->_item->getContentData($params);
-
+        $contents = $this->_item->Items($params);
         $view = new View;
-        $view->render('search', $format, $content_data);
+        $view->render('search', $format, $contents);
     }
 
     /**
