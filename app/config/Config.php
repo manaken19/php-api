@@ -1,6 +1,6 @@
 <?php
 /**
- * The database settings.
+ * config.
  */
 class Config
 {
@@ -10,8 +10,8 @@ class Config
         'pass' => '',
     );
 
-    public function getConfig($param)
+    public function getConfig($condition)
     {
-        return self::$$param;
+        return self::$$condicton;
     }
 }
