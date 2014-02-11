@@ -1,6 +1,13 @@
 <?php
 
-class CategoryModel
+namespace Model;
+
+/**
+ * Category Model.
+ *
+ * @author Yosuke Ohshima
+ */
+class Category extends \Core\Model
 {
 
     public function Items($request_params)

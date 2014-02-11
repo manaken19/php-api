@@ -1,6 +1,13 @@
 <?php
 
-class ItemsController
+namespace CORE;
+
+/**
+ * Controller Class.
+ *
+ * @author Yosuke Ohshima
+ */
+class Controller
 {
 
     protected $_item;

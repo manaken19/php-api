@@ -1,7 +1,9 @@
 <?php
 
+namespace CORE;
+
 /**
- * Router.
+ * Router Class.
  *
  * @author Yosuke Ohshima
  */

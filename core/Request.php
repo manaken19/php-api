@@ -1,5 +1,7 @@
 <?php
 
+namespace CORE;
+
 /**
  * Request.
  *

@@ -1,6 +1,13 @@
 <?php
 
-class ItemModel
+namespace CORE;
+
+/**
+ * Model Class.
+ *
+ * @author Yosuke Ohshima
+ */
+class Model
 {
 
     public function Items($request_params)

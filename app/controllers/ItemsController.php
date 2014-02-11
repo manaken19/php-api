@@ -1,6 +1,13 @@
 <?php
 
-class ItemsController
+namespace Controller;
+
+/**
+ * Items Controller.
+ *
+ * @author Yosuke Ohshima
+ */
+class Items extends \Core\Controller
 {
 
     protected $_item;

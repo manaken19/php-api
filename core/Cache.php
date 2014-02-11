@@ -1,7 +1,9 @@
 <?php
 
+namespace CORE;
+
 /**
-* Cache.
+* Cache Class.
 *
 * @author Yosuke Ohshima
 */

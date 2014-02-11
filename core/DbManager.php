@@ -1,8 +1,11 @@
 <?php
-require_once(dirname(__FILE__) . "/../config/db.php");
+
+namespace CORE;
 
 /**
- * Database object creation helper methods.
+ * DbManager Class.
+ *
+ * @author Yosuke Ohshima
  */
 class DbManager
 {

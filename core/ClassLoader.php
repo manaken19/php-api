@@ -1,7 +1,9 @@
 <?php
 
+namespace CORE;
+
 /**
-* ClassLoader.
+* ClassLoader Class.
 *
 * @author Yosuke Ohshima
 */

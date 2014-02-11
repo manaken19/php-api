@@ -1,5 +1,12 @@
 <?php
 
-class CategoriesController
+namespace Controller;
+
+/**
+ * Categores Controller.
+ *
+ * @author Yosuke Ohshima
+ */
+class Categories extends \Core\Controller
 {
 }

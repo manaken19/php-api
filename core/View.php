@@ -1,6 +1,13 @@
 <?php
 
-class BaseView
+namespace CORE;
+
+/**
+ * View Class.
+ *
+ * @author Yosuke Ohshima
+ */
+class View
 {
     public function render($action, $format, $contents)
     {
