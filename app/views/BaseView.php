@@ -1,6 +1,6 @@
 <?php
 
-class View
+class BaseView
 {
     public function render($action, $format, $contents)
     {

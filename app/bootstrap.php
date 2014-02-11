@@ -1,8 +1,10 @@
 <?php
 
-require './../app/core/ClassLoader.php';
+require COREPATH.'ClassLoader.php';
 
 $loader = new ClassLoader();
-$loader->registerDir(dirname(__FILE__).'/../app/core');
-$loader->registerDir(dirname(__FILE__).'/../app/models');
+$loader->registerDir(COREPATH);
+$loader->registerDir(APPPATH.'models');
+$loader->registerDir(APPPATH.'controllers');
+$loader->registerDir(APPPATH.'views');
 $loader->register();
