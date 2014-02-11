@@ -38,25 +38,23 @@ require APPPATH.'bootstrap.php';
 try
 {
     //TODO:RequestクラスだかRouterクラスのなんかを実行するだけで、アプリケーション毎に依存関係ないようにしたい
-    $items_controller      = new ItemsController();
-    $categories_controller = new CategoriesController();
-    $error_controller      = new ErrorController();
+    $controller_name = Request::getPathInfo();
 
-    $path_info               = array();
-    $path_info['controller'] = Request::getPathInfo();
-
-    switch ($path_info['controller']) {
+    switch ($controller_name) {
         case 'item':
+            $items_controller = new ItemsController();
             $item_controller->detail();
             break;
         case 'items':
+            $items_controller = new ItemsController();
             $item_controller->search();
             break;
         case 'categories':
+            $categories_controller = new CategoriesController();
             $categories_controller->categories();
             break;
         default:
-            $error_controller->error();
+            //TODO:なんらかのエラー処理
             break;
     }
 }
@@ -64,5 +62,3 @@ catch (HttpNotFoundException $e)
 {
         throw $e;
 }
-
-
