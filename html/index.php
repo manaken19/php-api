@@ -1,6 +1,6 @@
 <?php
 
-require_once '../app/controllers/items_controller.php';
+require_once '../app/controllers/ItemsController.php';
 
 $item_controller = new ItemsController();
 

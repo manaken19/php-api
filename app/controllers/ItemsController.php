@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__) . "/../models/item.php");
-require_once(dirname(__FILE__) . "/../models/category.php");
-require_once(dirname(__FILE__) . "/../views/view.php");
+require_once(dirname(__FILE__) . "/../models/itemModel.php");
+require_once(dirname(__FILE__) . "/../models/categoryModel.php");
+require_once(dirname(__FILE__) . "/../views/BaseView.php");
 
 class ItemsController
 {
