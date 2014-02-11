@@ -1,38 +1,24 @@
 <?php
 
 require './bootstrap.php';
+$items_controller      = new ItemsController();
+$categories_controller = new CategoriesController();
+$error_controller      = new ErrorController();
 
-$item_controller = new ItemsController();
+$path_info               = array();
+$path_info['controller'] = Request::resolvePathInfo();
 
-if (isset($_SERVER['PATH_INFO'])) {
-    $uri_segments = array();
-    $uri_segments = explode('/', ltrim($_SERVER['PATH_INFO'], '/'));
-} else {
-    $item_controller->error('404');
-}
-
-switch ($uri_segments[0]) {
+switch ($path_info['controller']) {
     case 'item':
-        if (isset($uri_segments[1])) {
-            $item_controller->detail($_GET, $uri_segments[1]);
-        } else {
-            $item_controller->error('405');
-        }
+        $item_controller->detail();
         break;
-
     case 'items':
-        $item_controller->search($_GET);
+        $item_controller->search();
         break;
-
     case 'categories':
-        if (isset($uri_segments[1])) {
-            $item_controller->category_items($_GET, $uri_segments[1]);
-        } else {
-            $item_controller->categories($_GET);
-        }
+        $categories_controller->categories();
         break;
-
     default:
-        $item_controller->error('405');
+        $error_controller->error('405');
         break;
 }
