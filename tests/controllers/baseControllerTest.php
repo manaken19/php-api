@@ -1,6 +1,6 @@
 <?php
 
-require_once (dirname(__FILE__).'/../../controlers/BaseController.php');
+require_once (dirname(__FILE__).'/../../controlers/BaseController.phpj');
 
 class BaseControllerTest extends PHPUnit_Framework_TestCase 
 {
@@ -8,9 +8,22 @@ class BaseControllerTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-
         $this->obj = new BaseController();
+    }
+
+    public function tearDown()
+    {
+        $this->obj = null;
+    }
+
+    public function testSearch()
+    {
+        $this->assertTrue(true);
 
     }
 
+    public function testDetail()
+    {
+        $test->assertTrue(true);
+    }
 }

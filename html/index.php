@@ -1,5 +1,6 @@
 <?php
 
+require './bootstrap.php';
 require_once '../app/controllers/ItemsController.php';
 
 $item_controller = new ItemsController();

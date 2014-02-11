@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__) . "/../models/itemModel.php");
-require_once(dirname(__FILE__) . "/../models/categoryModel.php");
+require_once(dirname(__FILE__) . "/../models/ItemModel.php");
+require_once(dirname(__FILE__) . "/../models/CategoryModel.php");
 require_once(dirname(__FILE__) . "/../views/BaseView.php");
 
 class ItemsController

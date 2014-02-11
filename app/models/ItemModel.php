@@ -1,6 +1,6 @@
 <?php
 
-require_once (dirname(__FILE__) . "/../core/db.php");
+require_once (dirname(__FILE__) . "/../core/DbManager.php");
 
 class ItemModel
 {

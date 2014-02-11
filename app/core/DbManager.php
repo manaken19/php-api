@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . "/../config/db.php");
 /**
  * Database object creation helper methods.
  */
-class Database
+class DbManager
 {
 
     private $dbh;
