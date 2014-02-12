@@ -5,8 +5,6 @@
  * @version    1.0
  * @author     Yosuke Ohshima
  */
-use \Core\Request;
-use \Model;
 
 /**
  * error reporting and display errors settings.
@@ -39,23 +37,21 @@ require APPPATH.'bootstrap.php';
 
 try
 {
-    //TODO:RequestクラスだかRouterクラスのなんかを実行するだけで、アプリケーション毎に依存関係ないようにしたい
-   // $controller_name = Request::getPathInfo();
-
-    $controller_name = new Request();
+    $request = new \Core\Request();
+    $controller_name = $request->getControllerName();
 
     switch ($controller_name) {
-        case 'item':
-            $items_controller = new ItemsController();
-            $item_controller->detail();
+        case '/item':
+            $items = new \Controller\Items();
+            $items->detail();
             break;
-        case 'items':
-            $items_controller = new ItemsController();
-            $item_controller->search();
+        case '/items':
+            $items = new \Controller\Items();
+            $items->search();
             break;
-        case 'categories':
-            $categories_controller = new CategoriesController();
-            $categories_controller->categories();
+        case '/categories':
+            $categories = new \Controller\Categories();
+            $categories->categories();
             break;
         default:
             //TODO:なんらかのエラー処理

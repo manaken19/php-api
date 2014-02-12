@@ -32,7 +32,7 @@ class Controller
     /**
      * 商品検索API /items
      */
-    public function search($params)
+    public function search()
     {
         $format   = $this->format($params);
         $contents = $this->_item->Items($params);

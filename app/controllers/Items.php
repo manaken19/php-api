@@ -14,8 +14,8 @@ class Items extends \Core\Controller
 
     public function __construct()
     {
-        $this->_item     = new ItemModel();
-        $this->_category = new CategoryModel();
+        $this->_item     = new \Model\Item();
+        $this->_category = new \Model\Category();
     }
 
     /**
@@ -32,7 +32,7 @@ class Items extends \Core\Controller
     /**
      * 商品検索API /items
      */
-    public function search($params)
+    public function search()
     {
         $format   = $this->format($params);
         $contents = $this->_item->Items($params);

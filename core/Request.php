@@ -130,4 +130,21 @@ class Request
 
         return $path_info;
     }
+
+    /**
+     * CONTROLLER_NAMEを取得
+     *
+     * @return string
+     */
+    public function getControllerName()
+    {
+        if(!empty($_SERVER['PATH_INFO'])){
+            $controller_name = $_SERVER['PATH_INFO'];
+        }else{
+            return false;
+        }
+
+        return $controller_name;
+    }
+
 }
