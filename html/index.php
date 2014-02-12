@@ -5,6 +5,8 @@
  * @version    1.0
  * @author     Yosuke Ohshima
  */
+use \Core\Request;
+use \Model;
 
 /**
  * error reporting and display errors settings.
@@ -38,7 +40,9 @@ require APPPATH.'bootstrap.php';
 try
 {
     //TODO:RequestクラスだかRouterクラスのなんかを実行するだけで、アプリケーション毎に依存関係ないようにしたい
-    $controller_name = Request::getPathInfo();
+   // $controller_name = Request::getPathInfo();
+
+    $controller_name = new Request();
 
     switch ($controller_name) {
         case 'item':

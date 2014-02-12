@@ -1,6 +1,6 @@
 <?php
 
-namespace CORE;
+namespace Core;
 
 /**
  * DbManager Class.
