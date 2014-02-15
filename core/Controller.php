@@ -3,60 +3,18 @@
 namespace Core;
 
 /**
- * Controller Class.
+ * Base Controller Class.
  *
  * @author Yosuke Ohshima
  */
 class Controller
 {
 
-    protected $_item;
-
     public function __construct()
     {
-        $this->_item     = new ItemModel();
-        $this->_category = new CategoryModel();
-    }
-
-    /**
-     * 商品詳細API /item
-     */
-    public function detail($params, $id = 1)
-    {
-        $format   = $this->format($params);
-        $contents = $this->_item->ItemDetail($id);
-        $view     = new View;
-        $view->render('detail', $format, $contents);
-    }
-
-    /**
-     * 商品検索API /items
-     */
-    public function search()
-    {
-        $format   = $this->format($params);
-        $contents = $this->_item->Items($params);
-        $view     = new View;
-        $view->render('search', $format, $contents);
-    }
-
-    /**
-     * カテゴリ一覧表示API /items
-     */
-    public function categories($params)
-    {
-        $format   = $this->format($params);
-        $contents = $this->_item->Categories($params);
-        $view     = new View;
-        $view->render('search', $format, $contents);
-    }
-
-    public function categoriy_items($params, $category_id)
-    {
-        $format   = $this->format($params);
-        $contents = $this->_category->Categories($category_id);
-        $view     = new View;
-        $view->render('search', $format, $contents);
+        $this->_item     = new \Model\Item();
+        $this->_category = new \Model\Category();
+        $this->request = $request;
     }
 
     /**
@@ -101,5 +59,20 @@ class Controller
             $format = 'json';
         }
         return $format;
+    }
+
+    public function param($param, $default = null)
+    {
+        return $this->request->param($param, $default);
+    }
+
+    /**
+     * This method returns all of the named parameters.
+     *
+     * @return  array
+     */
+    public function params()
+    {
+        return $this->request->params();
     }
 }

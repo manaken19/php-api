@@ -13,33 +13,25 @@ error_reporting(-1);
 ini_set('display_errors', 1);
 
 /**
- * Document root
+ * Path difine. 
  */
 define('DOCROOT', __DIR__.DIRECTORY_SEPARATOR);
-
-/*
- * The path to app.
- */
 define('APPPATH', realpath(__DIR__.'/../app/').DIRECTORY_SEPARATOR);
-
-/**
- * The path to core.
- */
 define('COREPATH', realpath(__DIR__.'/../core/').DIRECTORY_SEPARATOR);
-
-/**
- * Path to config.
- */
 define('CONFIGPARH', realpath(__DIR__.'/../config/').DIRECTORY_SEPARATOR);
 
-// Boot the app
 require APPPATH.'bootstrap.php';
+
 
 try
 {
-    $request = new \Core\Request();
+    // 初期化処理
+    $request    = new \Core\Request();
+    $db_manager = new \Core\DbManager();
+
     $controller_name = $request->getControllerName();
 
+    // @TODO:ここの処理をルータークラスに処理させたい
     switch ($controller_name) {
         case '/item':
             $items = new \Controller\Items();
