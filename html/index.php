@@ -34,16 +34,16 @@ try
     // @TODO:ここの処理をルータークラスに処理させたい
     switch ($controller_name) {
         case '/item':
-            $items = new \Controller\Items();
-            $items->detail();
+            $items = new \Controller\Item();
+            $items->index();
             break;
         case '/items':
             $items = new \Controller\Items();
-            $items->search();
+            $items->index();
             break;
         case '/categories':
             $categories = new \Controller\Categories();
-            $categories->categories();
+            $categories->index();
             break;
         default:
             //TODO:なんらかのエラー処理
