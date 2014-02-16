@@ -16,25 +16,14 @@ class Items extends \Core\Controller
     }
 
     /**
-     * 商品詳細API /item
+     * 商品検索API /item
      */
-    public function detail($params, $id = 1)
+    public function index()
     {
-        $format   = $this->format($params);
-        $contents = $this->_item->ItemDetail($id);
-        $view     = new View;
-        $view->render('detail', $format, $contents);
+        $output_format = $this->param('GET', 'format'); 
+        $search_conditions = $this->param('GET', 'id');
+        $contents = $this->_item($search_params);
+        $this->view->render('detail', $output_format, $contents);
     }
-
-    /**
-     * 商品検索API /items
-     */
-    public function search()
-    {
-        $format   = $this->format($params);
-        $contents = $this->_item->Items($params);
-        $view     = new View;
-        $view->render('search', $format, $contents);
-    }
-
+    
 }

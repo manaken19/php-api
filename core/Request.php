@@ -147,4 +147,45 @@ class Request
         return $controller_name;
     }
 
+    /**
+     * GETパラメータもしくはPOSTパラメーラをひとつ取得
+     *
+     * @return string
+     */
+    public function param($method, $key)
+    {
+        if ($method === 'GET') {
+            $param = $this->getGet($key, $default = null);
+        } elseif ($method === 'POST') {
+            $param = $this->getPost($key, $default = null);
+        } else {
+            return false;
+        }
+
+        return $param;
+    }
+
+    /**
+     * GETパラメータもしくはPOSTパラメーラを複数取得
+     *
+     * @return array
+     */
+    public function params($method, $keys)
+    {
+        $params = array();
+        if ($method === 'GET') {
+            foreach ($keys as $key) {
+                $params[] = $this->getGet($key, $default = null);
+            }
+        } elseif ($method === 'POST') {
+            foreach ($keys as $key) {
+                $params[] = $this->getPost($key, $default = null);
+            }
+        } else {
+            return false;
+        }
+
+        return $params;
+    }
+
 }

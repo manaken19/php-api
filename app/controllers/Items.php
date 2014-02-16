@@ -30,9 +30,10 @@ class Items extends \Core\Controller
             "keyword"     => "",       //検索キーワード
         );
 
-        $output_format = $this->param('GET', 'format'); 
+        $output_format     = $this->param('GET', 'format'); 
         $search_conditions = $this->params('GET', $default_params);
-        $contents = $this->_items($search_params);
+        $contents          = $this->_items($search_params);
+        
         $this->view->render('search', $output_format, $contents);
     }
 

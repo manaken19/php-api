@@ -19,30 +19,6 @@ class Controller
         $this->view      = new \Core\View();
     }
 
-    /**
-     * error action 
-     */
-    public function error($params) {
-        echo "error!!!";exit;
-
-        $error_code    = $params['status']['code'];
-        $error_message = $params['status']['message'];
-
-        switch($error_code){
-            case '400':
-                header("HTTP/1.1 400 Bad Request");
-                break;
-            case '404':
-                header("HTTP/1.1 404 Not Found");
-                break;
-            case '406':
-                header("HTTP/1.1 406 Not Acceptable");
-                break;
-            case '500':
-                header("HTTP/1.1 500 Internal Servr Error");
-                break;
-        }
-    }
 
     public function format($request_params)
     {
@@ -63,9 +39,9 @@ class Controller
         return $format;
     }
 
-    public function param($param, $default = null)
+    public function param($method, $key)
     {
-        return $this->request->param($param, $default);
+        return $this->request->param($method, $key);
     }
 
     /**
@@ -73,8 +49,8 @@ class Controller
      *
      * @return  array
      */
-    public function params()
+    public function params($method, $keys)
     {
-        return $this->request->params();
+        return $this->request->params($method, $keys);
     }
 }

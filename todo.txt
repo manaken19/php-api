@@ -1,8 +1,9 @@
 ・抽象化
 ・名前空間
 ・テストコード
-・cache
+・memcache
 ・オートロード
 ・xmlフォーマット対応
 ・phpDocumentor2(composer経由で) /docでアクセス可
 ・リファクタリングとドキュメントの整備
+・composerをちゃんと使う
