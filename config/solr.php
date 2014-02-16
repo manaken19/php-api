@@ -3,7 +3,7 @@
 /**
  * config.
  */
-$solr_config = array(
+return array(
 
 
 );

@@ -28,6 +28,8 @@ try
     // 初期化処理
     $request    = new \Core\Request();
     $db_manager = new \Core\DbManager();
+    $config     = new \Core\Config();
+    var_dump($config->get('mysql'));exit;
 
     $controller_name = $request->getControllerName();
 
