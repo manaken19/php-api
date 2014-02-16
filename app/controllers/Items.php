@@ -16,25 +16,24 @@ class Items extends \Core\Controller
     }
 
     /**
-     * 商品詳細API /item
-     */
-    public function detail($params, $id = 1)
-    {
-        $format   = $this->format($params);
-        $contents = $this->_item->ItemDetail($id);
-        $view     = new View;
-        $view->render('detail', $format, $contents);
-    }
-
-    /**
      * 商品検索API /items
      */
-    public function search()
+    public function index()
     {
-        $format   = $this->format($params);
-        $contents = $this->_item->Items($params);
-        $view     = new View;
-        $view->render('search', $format, $contents);
+        $default_params = array(
+            "page"        => "1",      //ページ数
+            "limit"       => "50",     //レスポンス件数
+            "min_price"   => "",       //最低価格
+            "max_price"   => "",       //最高価格
+            "sort"        => "",       //ソート方式: +price/-price/+id/-id
+            "category_id" => "",       //カテゴリID
+            "keyword"     => "",       //検索キーワード
+        );
+
+        $output_format = $this->param('GET', 'format'); 
+        $search_conditions = $this->params('GET', $default_params);
+        $contents = $this->_items($search_params);
+        $this->view->render('search', $output_format, $contents);
     }
 
 }

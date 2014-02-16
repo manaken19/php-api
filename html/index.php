@@ -22,22 +22,20 @@ define('CONFIGPARH', realpath(__DIR__.'/../config/').DIRECTORY_SEPARATOR);
 
 require APPPATH.'bootstrap.php';
 
-
 try
 {
     // 初期化処理
     $request    = new \Core\Request();
     $db_manager = new \Core\DbManager();
     $config     = new \Core\Config();
-    var_dump($config->get('mysql'));exit;
 
     $controller_name = $request->getControllerName();
 
     // @TODO:ここの処理をルータークラスに処理させたい
     switch ($controller_name) {
         case '/item':
-            $items = new \Controller\Item();
-            $items->index();
+            $item = new \Controller\Item();
+            $item->index();
             break;
         case '/items':
             $items = new \Controller\Items();
