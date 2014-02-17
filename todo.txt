@@ -7,3 +7,4 @@
 ・phpDocumentor2(composer経由で) /docでアクセス可
 ・リファクタリングとドキュメントの整備
 ・composerをちゃんと使う
+・hipchat対応
