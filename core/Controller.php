@@ -12,9 +12,9 @@ class Controller
 
     public function __construct()
     {
-        $this->_item     = new \Model\Item();
-        $this->_items    = new \Model\Items();
-        $this->_category = new \Model\Category();
+        $this->item     = new \Model\Item();
+        $this->items    = new \Model\Items();
+        $this->category = new \Model\Category();
         $this->request   = new \Core\Request();
         $this->view      = new \Core\View();
     }
