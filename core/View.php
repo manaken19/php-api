@@ -13,7 +13,7 @@ class View
     {
     	switch ($action) {
     		case 'search':
-                require_once(APPPATH . 'views/items/search.' . $format . 'json.php');
+                require_once(APPPATH . 'views/items/search.' . $format . '.php');
     			break;
     		
     		case 'detail':
