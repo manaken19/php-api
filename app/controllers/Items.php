@@ -32,7 +32,7 @@ class Items extends \Core\Controller
 
         $output_format     = $this->param('GET', 'format'); 
         $search_conditions = $this->params('GET', $default_params);
-        $contents          = $this->items->items($search_conditions);
+        $contents          = $this->items->search($search_conditions);
 
         $this->view->render('search', $output_format, $contents);
     }

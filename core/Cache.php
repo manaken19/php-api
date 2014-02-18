@@ -28,6 +28,10 @@ class Cache
     public function get($key)
     {
         $result = $memcached->get($key);
+        
+        if (! $result){
+            return false;
+        }
       
         return $result;
     }

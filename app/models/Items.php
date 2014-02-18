@@ -9,184 +9,76 @@ namespace Model;
  */
 class Items extends \Core\Model
 {
-
-    public function Items($request_params)
+    public function search($params)
     {
-        $content_data = array();
-        $params = array();
+        $placeholders = array();
+        $sql = "SELECT * FROM item WHERE :where ORDER BY :order LIMIT :limit OFFSET :offset";
 
-        foreach ($request_params as $key => $value) {
-            switch ($key) {
-                case 'category' :
-                case 'price_min':
-                case 'price_max':
-                case 'sort':
-                case 'count_per_page':
-                case 'page_number':
-                case 'q':
-                    $params[$key] = $value;
+        $where_params = array(
+            ":min_price"   => "price >= :min_price",
+            ":max_price"   => "price <= :max_price",
+            ":category_id" => "category_id = :category_id",
+            ":keyword"     => "MATCH(title) AGAINST(:keyword)",
+        );
+
+        foreach($params as $key => $value){
+            if(empty($value)){
+                continue;
+            }
+            switch($key){
+                case "min_price":
+                    $placeholders[":min_price"] = $value;
                     break;
-                default :
+                case "max_price":
+                    $placeholders[":max_price"] = $value;
+                    break;
+                case "page":
+                    $offset = ($params["page"] - 1) * $params["limit"];
+                    $placeholders[":offset"] = $offset;
+                    break;
+                case "limit":
+                    $placeholders[":limit"] = $value;
+                    break;
+                case "sort":
+                    switch($value){
+                        case "+price":
+                            $sql = str_replace(":order", "price ASC", $sql);
+                            break;
+                        case "-price":
+                            $sql = str_replace(":order", "price DESC", $sql);
+                            break;
+                        case "+id":
+                            $sql = str_replace(":order", "id ASC", $sql);
+                            break;
+                        case "+id":
+                            $sql = str_replace(":order", "id DESC", $sql);
+                            break;
+                    }
+                    break;
+                case "category_id":
+                    $placeholders[":category_id"] = $value;
+                    break;
+                case "keyword":
+                    $placeholders[":keyword"] = $value;
+                    break;
+                default:
                     break;
             }
         }
 
-        $content_data  = $this->getData($params);
+        if(empty($placeholders[":order"])){
+            $sql = str_replace("ORDER BY :order", "", $sql);
+        }
 
-        $response_array['result'] = array(
-            'requested' => array(
-                    'parameter' => $request_params,
-                    'timestamp' => time()
-            ),
-            'item_count' => count($content_data),
-            'items' => $content_data
-        );
-        $content_data = json_encode($response_array);
+        if(empty($placeholders[":limit"])){
+            $sql = str_replace("LIMIT :limit", "", $sql);
+        }
 
-        return $content_data;
+        $sql = str_replace("WHERE :where", $this->_db->createWhereStr($where_params, $placeholders), $sql);
 
+        $result = $this->_db->fetchAll($sql, $placeholders);
+        var_dump($result);exit;
+
+        return $result;
     }
-
-    public function ItemDetail($id)
-    {
-        $db    = new Database;
-
-        $where_str = "WHERE id = :id";
-        $placeholders = array();
-        $placeholders[':id'] = $id;
-        $sql  = "SELECT * FROM item {$where_str}";
-        $content_data = $db->fetchAll($sql, $placeholders);
-
-        $parent_category_id = $content_data[0]['category_id'];
-        $where_str = "WHERE parent_id = :parent_id";
-        $sql  = "SELECT * FROM categories {$where_str}";
-        $placeholders = array();
-        $placeholders[':parent_id'] = $parent_category_id;
-        $child_category_id = $db->fetchAll($sql, $placeholders);
-
-        $response_array['result'] = array(
-            'requested' => array(
-                    'parameter' => $id,
-                    'timestamp' => time()
-            ),
-            'item_count' => count($content_data),
-            'items' => $content_data,
-            'category_info' => array(
-                'parent_category_id'  => $parent_category_id,
-                'child_category_id' => $child_category_id
-            )
-        );
-        $content_data = json_encode($response_array);
-
-        return $content_data;
-
-    }
-
-    public function Categories()
-    {
-        $placeholders = array();
-        $db           = new Database;
-        $sql          = "select * from categories";
-        $content_data = $db->fetchAll($sql, $placeholders);
-
-        $response_array['result'] = array(
-            'requested' => array(
-                    'parameter' => null,
-                    'timestamp' => time()
-            ),
-            'item_count' => count($content_data),
-            'items'      => $content_data
-        );
-        $content_data = json_encode($response_array);
-
-        return $content_data;
-
-    }
-
-    private function getData($params)
-    {
-
-        $placeholders = array();
-
-        $where_array = '';
-        $where_str   = ''; //WHERE 部分
-        $order_str   = ''; //ORDER BY 部分
-        $limit_str   = ''; //LIMT 部分
-        $offset_str  = ''; //OFFSET 部分
-        $like_str    = '';
-
-
-        //WHERE文の指定
-        $where_flg = false;
-        if (!empty($params['category'])) {
-            $where_array[] = 'category = :category';
-            $placeholders[':category'] = $params['category'];
-            $where_flg = true;
-        }
-        if (!empty($params['price_min'])) {
-            $where_array[] = 'price >= :price_min';
-            $placeholders[':price_min'] = $params['price_min'];
-            $where_flg = true;
-        }
-        if (!empty($params['price_max'])) {
-            $where_array[] = 'price <= :price_max';
-            $placeholders[':price_max'] = $params['price_max'];
-            $where_flg = true;
-        }
-
-        if ($where_flg === true) { 
-            $where_str = implode(' AND ', $where_array);
-        } else {
-            $where_str = '';
-        }
-        if (! count($where_array)) {
-            $where_str = " WHERE " . $where_str;
-        }
-
-        //ORDER BY 部分の指定
-        if (! empty($params['sort'])) {
-            switch ($params['sort']) {
-                case 'id_asc' :
-                    $order_str = "ORDER BY id ASC";
-                    break;
-                case 'id_desc' :
-                    $order_str = "ORDER BY id DESC";
-                    break;
-                case 'price_asc' :
-                    $order_str = "ORDER BY price ASC";
-                    break;
-                case 'price_desc' :
-                    $order_str = "ORDER BY price DESC";
-                    break;
-            }
-        }
-
-        if (! empty($params['count_per_page']) && !empty($params['page_number'])) {
-
-            $limit_str = "LIMIT :limit_count";
-            $placeholders[':limit_count'] = $params['count_per_page'];
-
-            $offset_str = "OFFSET :offset_count";
-            $placeholders[':offset_count'] = $params['count_per_page'] * ($params['page_number'] - 1);
-        } else {
-
-            $limit_str = "LIMIT :limit_count";
-            $placeholders[':limit_count'] = 100;
-
-        }
-
-        if (! empty($params['q'])) {
-            $like_str = "WHERE title LIKE :query";
-            $placeholders[':query'] = "%".$params['q']."%";
-        }
-
-        $sql  = "SELECT * FROM item {$where_str} {$like_str} {$order_str} {$limit_str} {$offset_str}";
-
-        $db    = new Database;
-
-        $items = $db->fetchAll($sql, $placeholders);
-
-        return $items;
-    }
-
 }

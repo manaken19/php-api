@@ -13,7 +13,7 @@ class Model
 
     public function __construct()
     {
-        $this->_db = new DbManager();
+        $this->_db = new \Core\DbManager();
     }
 
 }
