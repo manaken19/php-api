@@ -61,6 +61,7 @@ class mysqlConnector implements BaseConnector
 
     private function _fetchAll($sql, $placeholders = array())
     {
+        var_dump($sql);exit;
         $sth = $this->_dbh->prepare($sql);
 
         foreach($placeholders as $key => $value){

@@ -1,4 +1,4 @@
 <?php
     header("Content-Type: application/json; charset=utf-8");
-    echo $contents;
+    echo json_encode($contents);
 ?>

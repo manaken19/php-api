@@ -71,13 +71,13 @@ class Items extends \Core\Model
         }
 
         if(empty($placeholders[":limit"])){
-            $sql = str_replace("LIMIT :limit", "", $sql);
+            $sql = str_replace("LIMIT :limit", "LIMIT 50", $sql);
+            $sql = str_replace("OFFSET :offset", "OFFSET 0", $sql);
         }
 
         $sql = str_replace("WHERE :where", $this->_db->createWhereStr($where_params, $placeholders), $sql);
 
         $result = $this->_db->fetchAll($sql, $placeholders);
-        var_dump($result);exit;
 
         return $result;
     }

@@ -4,7 +4,7 @@
  * config.
  */
 return array(
-    'dns'  => 'mysql:dbname=aucfan;host=localhost',
+    'dns'  => 'mysql:dbname=php_api;host=localhost',
     'user' => 'root',
-    'pass' => 'naruhaya',
+    'pass' => '',
 );
