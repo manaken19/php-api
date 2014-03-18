@@ -9,15 +9,16 @@ namespace Core;
 */
 class Cache
 {
+    public $memcached;
     public function __construct()
     {
-        $memcached = new Memcached();
-        $memcached->addServer('localhost', 11211);
     }
 
     public function set($key, $data)
-    {
-        $result = $memcached->set($key, $data, time() + 60);
+    { 
+        $m = new \Memcached();
+        $m->addServer('localhost', 11211);
+        $result = $m->set($key, $data, time() + 60);
         if (! $result){
             return false;
         }
@@ -25,9 +26,12 @@ class Cache
         return ture;
     }
 
-    public function get($key)
+    public function get($key= 'json')
     {
-        $result = $memcached->get($key);
+        $m = new \Memcached();
+        $m->addServer('localhost', 11211);
+
+        $result = $m->get($key);
         
         if (! $result){
             return false;
