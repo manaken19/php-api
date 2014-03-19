@@ -12,7 +12,7 @@ class Items extends \Core\Model
     public function search($params)
     {
         $placeholders = array();
-        $sql = "SELECT * FROM item WHERE :where ORDER BY :order LIMIT :limit OFFSET :offset";
+        $sql = "SELECT * FROM items WHERE :where ORDER BY :order LIMIT :limit OFFSET :offset";
 
         $where_params = array(
             ":min_price"   => "price >= :min_price",
