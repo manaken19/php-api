@@ -41,7 +41,7 @@ class Controller
 
     public function param($method, $key)
     {
-        return $this->request->param($method, $key);
+        return $this->format($key);
     }
 
     /**

@@ -32,10 +32,10 @@ class Items extends \Core\Controller
             "keyword"     => "",       //検索キーワード
         );
 
-        $output_format     = $this->param('GET', 'format');
-        $search_conditions = $this->params('GET', $default_params);
-        //$key = implode($search_conditions);
-        $key = "test";
+        $format     = $this->format($_GET);
+        //$search_conditions = $this->params($default_params);
+        $conditions = $default_params;
+        $key = implode($conditions);
         if ($cache->get($key)) {
             $contents = $cache->get($key);
         } else {
@@ -43,9 +43,7 @@ class Items extends \Core\Controller
             $cache->set($key, $contents);
         }
 
-
-
-        $this->view->render('search', $output_format, $contents);
+        $this->view->render('search', $format, $contents);
     }
 
     public function item()
