@@ -32,8 +32,7 @@ class Items extends \Core\Controller
             "keyword"     => "",       //検索キーワード
         );
 
-        //$output_format     = $this->param('GET', 'format');
-        $output_format     = 'json';
+        $output_format     = $this->param('GET', 'format');
         $search_conditions = $this->params('GET', $default_params);
         //$key = implode($search_conditions);
         $key = "test";
