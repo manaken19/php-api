@@ -23,8 +23,8 @@ class Items extends \Core\Controller
         $cache =  new \Core\Cache();
 
         $default_params = array(
-            "page"        => "1",      //ページ数
-            "limit"       => "50",     //レスポンス件数
+            "page"        => 1,      //ページ数
+            "limit"       => 50,     //レスポンス件数
             "min_price"   => "",       //最低価格
             "max_price"   => "",       //最高価格
             "sort"        => "",       //ソート方式: +price/-price/+id/-id
@@ -39,7 +39,7 @@ class Items extends \Core\Controller
         if ($cache->get($key)) {
             $contents = $cache->get($key);
         } else {
-            $contents = $this->items->search($conditions);
+            $contents = $this->model_items->search($conditions);
             $cache->set($key, $contents);
         }
 

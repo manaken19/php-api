@@ -36,7 +36,7 @@ class DbManager
             $stmt->bindValue($key, $value, $data_type);
         }
 
-        $stmt->execute();
+        $aaa = $stmt->execute();
 
         return $stmt;
 
