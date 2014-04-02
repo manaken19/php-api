@@ -23,7 +23,7 @@ class Cache
             return false;
         }
 
-        return ture;
+        return true;
     }
 
     public function get($key= 'json')

@@ -39,7 +39,7 @@ class Items extends \Core\Controller
         if ($cache->get($key)) {
             $contents = $cache->get($key);
         } else {
-            $contents = $this->items->search($search_conditions);
+            $contents = $this->items->search($conditions);
             $cache->set($key, $contents);
         }
 
